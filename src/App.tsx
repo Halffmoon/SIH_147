@@ -14,11 +14,13 @@ const pages = {
   modulation: () => import('./pages/ModulationPage'),
   synchronization: () => import('./pages/SynchronizationPage'),
   demodulation: () => import('./pages/DemodulationPage'),
+  history: () => import('./pages/HistoryPage'),
   fec: () => import('./pages/FECPage'),
   bitstream: () => import('./pages/BitStreamPage'),
   report: () => import('./pages/ReportPage'),
 };
 
+const Landing = lazy(() => import('./pages/landing/LandingPage'));
 const Login = lazy(() => import('./pages/auth/LoginPage'));
 const Signup = lazy(() => import('./pages/auth/SignupPage'));
 const Dashboard = lazy(pages.dashboard);
@@ -27,6 +29,7 @@ const Parameters = lazy(pages.parameters);
 const Modulation = lazy(pages.modulation);
 const Synchronization = lazy(pages.synchronization);
 const Demodulation = lazy(pages.demodulation);
+const History = lazy(pages.history);
 const FEC = lazy(pages.fec);
 const BitStream = lazy(pages.bitstream);
 const Report = lazy(pages.report);
@@ -72,11 +75,12 @@ export default function App() {
       <AnalysisProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/" element={<Suspense fallback={null}><Landing /></Suspense>} />
             <Route path="/login" element={<Suspense fallback={null}><Login /></Suspense>} />
             <Route path="/signup" element={<Suspense fallback={null}><Signup /></Suspense>} />
             <Route element={<ProtectedLayout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/history" element={<History />} />
               <Route path="/visualizations" element={<Visualizations />} />
               <Route path="/parameters" element={<Parameters />} />
               <Route path="/modulation" element={<Modulation />} />
@@ -86,7 +90,7 @@ export default function App() {
               <Route path="/bitstream" element={<BitStream />} />
               <Route path="/report" element={<Report />} />
             </Route>
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AnalysisProvider>
